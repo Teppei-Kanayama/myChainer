@@ -49,21 +49,44 @@ print('# epoch: {}'.format(args.epoch))
 print('Network type: {}'.format(args.net))
 print('')
 
+#Prepare cifar-10 dataset
+print('load cifar-10 dataset')
+import cPickle
+fo = open('../../../data/cifar-10-batches-py/data_batch_1', 'r')
+d = cPickle.load(fo)
+fo.close()
+
+"""
 # Prepare dataset
 print('load MNIST dataset')
 mnist = data.load_mnist_data()
 mnist['data'] = mnist['data'].astype(np.float32)
 mnist['data'] /= 255
 mnist['target'] = mnist['target'].astype(np.int32)
+"""
 
-N = 60000
+x_train = d["data"].astype(np.float32)
+x_test = d["data"].astype(np.float32)
+y_train = np.array(d["labels"], dtype = np.int32)
+y_test = np.array(d["labels"], dtype = np.int32)
+
+N = 10000
+"""
 x_train, x_test = np.split(mnist['data'],   [N])
 y_train, y_test = np.split(mnist['target'], [N])
+print(type(x_train), x_train.shape)
+print(type(x_test), x_test.shape)
+print(type(y_train), y_train.shape)
+print(type(y_test), y_test.shape)
+print(y_train)
+print(y_test)
+"""
 N_test = y_test.size
 
 # Prepare multi-layer perceptron model, defined in net.py
 if args.net == 'simple':
-    model = L.Classifier(net.MnistMLP(784, n_units, 10))
+    #model = L.Classifier(net.MnistMLP(784, n_units, 10))
+    model = L.Classifier(net.MnistMLP(3072, n_units, 10))
     if args.gpu >= 0:
         cuda.get_device(args.gpu).use()
         model.to_gpu()
@@ -109,8 +132,9 @@ for epoch in six.moves.range(1, n_epoch + 1):
                                   'style': 'filled'}
                 g = computational_graph.build_computational_graph(
                     (model.loss, ),
-                    variable_style=variable_style,
-                    function_style=function_style)
+                    #variable_style=variable_style,
+                    #function_style=function_style
+                )
                 o.write(g.dump())
             print('graph generated')
 
