@@ -65,8 +65,8 @@ mnist['data'] /= 255
 mnist['target'] = mnist['target'].astype(np.int32)
 """
 
-x_train = d["data"].astype(np.float32)
-x_test = d["data"].astype(np.float32)
+x_train = d["data"].astype(np.float32).reshape(10000, 3, 32, 32)
+x_test = d["data"].astype(np.float32).reshape(10000, 3, 32 ,32)
 y_train = np.array(d["labels"], dtype = np.int32)
 y_test = np.array(d["labels"], dtype = np.int32)
 

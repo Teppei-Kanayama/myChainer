@@ -11,7 +11,7 @@ class MnistMLP(chainer.Chain):
     build your own neural net.
 
     """
-    
+    """
     def __init__(self, n_in, n_units, n_out):
         super(MnistMLP, self).__init__(
             l1=L.Linear(n_in, n_units),
@@ -31,14 +31,14 @@ class MnistMLP(chainer.Chain):
     
     def __init__(self, n_in, n_units, n_out):
         super(MnistMLP, self).__init__(
-            conv1=L.Convolution2D(3,  96, 11, stride=4),
+            conv1=L.Convolution2D(3,  96, 11, stride=1),
             conv2=L.Convolution2D(96, 256,  5, pad=2),
             conv3=L.Convolution2D(256, 384,  3, pad=1),
             conv4=L.Convolution2D(384, 384,  3, pad=1),
             conv5=L.Convolution2D(384, 256,  3, pad=1),
-            fc6=L.Linear(9216, 4096),
+            fc6=L.Linear(1024, 4096),
             fc7=L.Linear(4096, 4096),
-            fc8=L.Linear(4096, 1000),
+            fc8=L.Linear(4096, 10),
         )
         self.train = True
 
@@ -58,7 +58,8 @@ class MnistMLP(chainer.Chain):
         h = F.dropout(F.relu(self.fc6(h)), train=self.train)
         h = F.dropout(F.relu(self.fc7(h)), train=self.train)
         h = self.fc8(h)
-    """
+        return h
+    
     
 class MnistMLPParallel(chainer.Chain):
 
