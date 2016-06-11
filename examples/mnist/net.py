@@ -4,29 +4,6 @@ import chainer.links as L
 
 
 class MnistMLP(chainer.Chain):
-
-    """An example of multi-layer perceptron for MNIST dataset.
-
-    This is a very simple implementation of an MLP. You can modify this code to
-    build your own neural net.
-
-    """
-    """
-    def __init__(self, n_in, n_units, n_out):
-        super(MnistMLP, self).__init__(
-            l1=L.Linear(n_in, n_units),
-            l2=L.Linear(n_units, n_units),
-            l3=L.Linear(n_units, n_out),
-        )
-        #print self.l1.W.data
-
-    def __call__(self, x):
-        #print self.l1.W.data
-        h1 = F.relu(self.l1(x))
-        h2 = F.relu(self.l2(h1))
-        return self.l3(h2)
-    
-    """
     insize = 32
     
     def __init__(self, n_in, n_units, n_out):
@@ -47,6 +24,7 @@ class MnistMLP(chainer.Chain):
         self.accuracy = None
 
     def __call__(self, x):
+        print self.conv1.W.data
         self.clear()
         h = F.max_pooling_2d(F.relu(
             F.local_response_normalization(self.conv1(x))), 3, stride=2)
@@ -59,8 +37,35 @@ class MnistMLP(chainer.Chain):
         h = F.dropout(F.relu(self.fc7(h)), train=self.train)
         h = self.fc8(h)
         return h
-    
-    
+
+class Alex2(chainer.Chain):
+    inseize = 32
+
+    def __init__(self):
+        super(Alex2, self).__init__(
+            conv1 = F.Convolution2D(3, 32, 3),
+            bn1 = F.BatchNormalization(32),
+            conv2 = F.Convolution2D(32, 64, 3, pad=1),
+            bn2 = F.BatchNormalization(64),
+            conv3 = F.Convolution2D(64, 64, 3, pad=1),
+            fl4 = F.Linear(1024, 256),
+            fl5 = F.Linear(256, 10)
+        )
+        self.train = True
+
+    def clear(self):
+        self.loss = None
+        self.accuracy = None
+
+    def __call__(self, x):
+        self.clear()
+        h = F.max_pooling_2d(F.relu(self.bn1(self.conv1(x))), 2)
+        h = F.max_pooling_2d(F.relu(self.bn2(self.conv2(h))), 2)
+        h = F.max_pooling_2d(F.relu(self.conv3(h)), 2)
+        h = F.dropout(F.relu(self.fl4(h)), train=self.train)
+        h = self.fl5(h)
+        return h
+
 class MnistMLPParallel(chainer.Chain):
 
     """An example of model-parallel MLP.

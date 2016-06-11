@@ -52,41 +52,42 @@ print('')
 #Prepare cifar-10 dataset
 print('load cifar-10 dataset')
 import cPickle
-fo = open('../../../data/cifar-10-batches-py/data_batch_1', 'r')
-d = cPickle.load(fo)
+train_dataset_list = []
+for i in range(5):
+    filename = "../../../data/cifar-10-batches-py/data_batch_" + str(i + 1)
+    fo = open(filename, 'r')
+    d = cPickle.load(fo)
+    train_dataset_list.append(d)
+    fo.close()
+
+filename = "../../../data/cifar-10-batches-py/test_batch"
+fo = open(filename, 'r')
+test_dataset = cPickle.load(fo)
 fo.close()
 
-"""
-# Prepare dataset
-print('load MNIST dataset')
-mnist = data.load_mnist_data()
-mnist['data'] = mnist['data'].astype(np.float32)
-mnist['data'] /= 255
-mnist['target'] = mnist['target'].astype(np.int32)
-"""
+flag = 0
+for d in train_dataset_list:
+    if not(flag):
+        x_train = d["data"].astype(np.float32).reshape(10000, 3, 32, 32)
+        y_train = np.array(d["labels"], dtype = np.int32)
+        flag = 1
+    else:
+        x_train = np.r_[x_train, d["data"].astype(np.float32).reshape(10000, 3, 32, 32)]
+        y_train = np.r_[y_train, np.array(d["labels"], dtype = np.int32)]
 
-x_train = d["data"].astype(np.float32).reshape(10000, 3, 32, 32)
-x_test = d["data"].astype(np.float32).reshape(10000, 3, 32 ,32)
-y_train = np.array(d["labels"], dtype = np.int32)
-y_test = np.array(d["labels"], dtype = np.int32)
+x_test = test_dataset["data"].astype(np.float32).reshape(10000, 3, 32, 32)
+y_test = np.array(test_dataset["labels"], dtype = np.int32)
 
+N = 50000
 N = 10000
-"""
-x_train, x_test = np.split(mnist['data'],   [N])
-y_train, y_test = np.split(mnist['target'], [N])
-print(type(x_train), x_train.shape)
-print(type(x_test), x_test.shape)
-print(type(y_train), y_train.shape)
-print(type(y_test), y_test.shape)
-print(y_train)
-print(y_test)
-"""
+
 N_test = y_test.size
 
 # Prepare multi-layer perceptron model, defined in net.py
 if args.net == 'simple':
     #model = L.Classifier(net.MnistMLP(784, n_units, 10))
-    model = L.Classifier(net.MnistMLP(3072, n_units, 10))
+    #model = L.Classifier(net.MnistMLP(3072, n_units, 10))
+    model = L.Classifier(net.Alex2())
     if args.gpu >= 0:
         cuda.get_device(args.gpu).use()
         model.to_gpu()
@@ -118,11 +119,14 @@ for epoch in six.moves.range(1, n_epoch + 1):
     sum_loss = 0
     start = time.time()
     for i in six.moves.range(0, N, batchsize):
+        print(i)
         x = chainer.Variable(xp.asarray(x_train[perm[i:i + batchsize]]))
         t = chainer.Variable(xp.asarray(y_train[perm[i:i + batchsize]]))
 
         # Pass the loss function (Classifier defines it) and its arguments
+        #print('a')
         optimizer.update(model, x, t)
+        print('b')
 
         if epoch == 1 and i == 0:
             with open('graph.dot', 'w') as o:
