@@ -3,11 +3,11 @@ import chainer.functions as F
 import chainer.links as L
 
 
-class MnistMLP(chainer.Chain):
+class Net1(chainer.Chain):
     insize = 32
     
-    def __init__(self, n_in, n_units, n_out):
-        super(MnistMLP, self).__init__(
+    def __init__(self):
+        super(Net1, self).__init__(
             conv1=L.Convolution2D(3,  96, 11, stride=1),
             conv2=L.Convolution2D(96, 256,  5, pad=2),
             conv3=L.Convolution2D(256, 384,  3, pad=1),
@@ -38,11 +38,11 @@ class MnistMLP(chainer.Chain):
         h = self.fc8(h)
         return h
 
-class Alex2(chainer.Chain):
+class Net2(chainer.Chain):
     inseize = 32
 
     def __init__(self):
-        super(Alex2, self).__init__(
+        super(Net2, self).__init__(
             conv1 = F.Convolution2D(3, 32, 3),
             bn1 = F.BatchNormalization(32),
             conv2 = F.Convolution2D(32, 64, 3, pad=1),

@@ -79,15 +79,12 @@ x_test = test_dataset["data"].astype(np.float32).reshape(10000, 3, 32, 32)
 y_test = np.array(test_dataset["labels"], dtype = np.int32)
 
 N = 50000
-N = 10000
 
 N_test = y_test.size
 
 # Prepare multi-layer perceptron model, defined in net.py
 if args.net == 'simple':
-    #model = L.Classifier(net.MnistMLP(784, n_units, 10))
-    #model = L.Classifier(net.MnistMLP(3072, n_units, 10))
-    model = L.Classifier(net.Alex2())
+    model = L.Classifier(net.Net2())
     if args.gpu >= 0:
         cuda.get_device(args.gpu).use()
         model.to_gpu()
@@ -124,9 +121,7 @@ for epoch in six.moves.range(1, n_epoch + 1):
         t = chainer.Variable(xp.asarray(y_train[perm[i:i + batchsize]]))
 
         # Pass the loss function (Classifier defines it) and its arguments
-        #print('a')
         optimizer.update(model, x, t)
-        print('b')
 
         if epoch == 1 and i == 0:
             with open('graph.dot', 'w') as o:
