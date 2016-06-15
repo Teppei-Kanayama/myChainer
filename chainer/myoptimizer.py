@@ -8,7 +8,9 @@ from chainer import cuda
 import chainer.link as link_module
 
 
-DELAY_NUM = 7
+DELAY_NUM = 5
+PRE_BATCH_NUM = 0
+N = 50000
 
 def _sum_sqnorm(arr):
     sq_sum = collections.defaultdict(float)
@@ -359,7 +361,6 @@ class GradientMethod(Optimizer):
 
     """
 
-    #-----------start
     def __init__(self):
         print("This is imported from myoptimizer.py")
         print("DELAY_NUM = %d" % DELAY_NUM)
@@ -368,12 +369,8 @@ class GradientMethod(Optimizer):
         self.prevconv3 = []
         self.prevfc4 = []
         self.prevfc5 =[]
-        self.nowconv1 = None
-        self.nowconv2 = None
-        self.nowconv3 = None
-        self.nowfc4 = None
-        self.nowfc5 = None
-    #-----------end
+        self.count = 0
+
     def update(self, lossfun=None, *args, **kwds):
         """Updates parameters based on a loss function or computed gradients.
 
@@ -391,10 +388,9 @@ class GradientMethod(Optimizer):
 
         """
         if lossfun is not None:
-
-            #when run normaly, commentout these lines.
-            #-----------start
-            if True:
+            if self.count < PRE_BATCH_NUM:
+                pass
+            else:
                 self.prevconv1.append(cupy.array(self.target.predictor.conv1.W.data))
                 self.prevconv2.append(cupy.array(self.target.predictor.conv2.W.data))
                 self.prevconv3.append(cupy.array(self.target.predictor.conv3.W.data))
@@ -414,7 +410,6 @@ class GradientMethod(Optimizer):
                     self.target.predictor.fc4.W.data = cupy.array(self.prevfc4[0])
                     self.target.predictor.fc5.W.data = cupy.array(self.prevfc5[0])
 
-            #-----------end
             self.target.zerograds()
             loss = lossfun(*args, **kwds)
             loss.backward()
@@ -422,19 +417,27 @@ class GradientMethod(Optimizer):
         self.call_hooks()
         self.prepare()
         
-        #------------start
-        if True:
+
+        if self.count < PRE_BATCH_NUM:
+            pass
+        else:
             self.target.predictor.conv1.W.data = cupy.array(self.prevconv1[-1])
             self.target.predictor.conv2.W.data = cupy.array(self.prevconv2[-1])
             self.target.predictor.conv3.W.data = cupy.array(self.prevconv3[-1])
             self.target.predictor.fc4.W.data = cupy.array(self.prevfc4[-1])
             self.target.predictor.fc5.W.data = cupy.array(self.prevfc5[-1])
-        #------------end
+
         self.t += 1
         states = self._states
         for name, param in self.target.namedparams():
             with cuda.get_device(param.data):
                 self.update_one(param, states[name])
+        
+        if self.count == N - 1:
+            self.count = 0
+        else:
+            self.count += 1
+
 
     def update_one(self, param, state):
         """Updates a parameter based on the corresponding gradient and state.
