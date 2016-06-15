@@ -24,7 +24,6 @@ class Net1(chainer.Chain):
         self.accuracy = None
 
     def __call__(self, x):
-        print self.conv1.W.data
         self.clear()
         h = F.max_pooling_2d(F.relu(
             F.local_response_normalization(self.conv1(x))), 3, stride=2)
@@ -40,7 +39,7 @@ class Net1(chainer.Chain):
 
 class Net2(chainer.Chain):
     inseize = 32
-
+    
     def __init__(self):
         super(Net2, self).__init__(
             conv1 = F.Convolution2D(3, 32, 3),
@@ -48,10 +47,18 @@ class Net2(chainer.Chain):
             conv2 = F.Convolution2D(32, 64, 3, pad=1),
             bn2 = F.BatchNormalization(64),
             conv3 = F.Convolution2D(64, 64, 3, pad=1),
-            fl4 = F.Linear(1024, 256),
-            fl5 = F.Linear(256, 10)
+            fc4 = F.Linear(1024, 256),
+            fc5 = F.Linear(256, 10)
         )
+        
         self.train = True
+        """
+        self.prev_conv1 = None
+        self.prev_conv2 = None
+        self.prev_conv3 = None
+        self.prev_fc4 = None
+        self.prev_fc5 = None
+        """
 
     def clear(self):
         self.loss = None
@@ -59,11 +66,17 @@ class Net2(chainer.Chain):
 
     def __call__(self, x):
         self.clear()
+        """
+        if self.prev_conv1 != None:
+            self.conv1.W.data = self.prev_conv1
+        """
+        #print(dir(self))
+        #print(dir(self.conv1))
         h = F.max_pooling_2d(F.relu(self.bn1(self.conv1(x))), 2)
         h = F.max_pooling_2d(F.relu(self.bn2(self.conv2(h))), 2)
         h = F.max_pooling_2d(F.relu(self.conv3(h)), 2)
-        h = F.dropout(F.relu(self.fl4(h)), train=self.train)
-        h = self.fl5(h)
+        h = F.dropout(F.relu(self.fc4(h)), train=self.train)
+        h = self.fc5(h)
         return h
 
 class MnistMLPParallel(chainer.Chain):

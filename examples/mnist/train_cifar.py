@@ -21,6 +21,12 @@ from chainer import serializers
 import data
 import net
 
+import sys
+sys.path.append("/home/mil/kanayama/chainer/chainer/optimizers/")
+import myadam
+import mysgd
+
+
 parser = argparse.ArgumentParser(description='Chainer example: MNIST')
 parser.add_argument('--initmodel', '-m', default='',
                     help='Initialize the model from given file')
@@ -95,7 +101,8 @@ elif args.net == 'parallel':
     xp = cuda.cupy
 
 # Setup optimizer
-optimizer = optimizers.Adam()
+optimizer = myadam.Adam()
+#optimizer = mysgd.SGD()
 optimizer.setup(model)
 
 # Init/Resume
@@ -116,13 +123,12 @@ for epoch in six.moves.range(1, n_epoch + 1):
     sum_loss = 0
     start = time.time()
     for i in six.moves.range(0, N, batchsize):
-        print(i)
+        #print(i)
         x = chainer.Variable(xp.asarray(x_train[perm[i:i + batchsize]]))
         t = chainer.Variable(xp.asarray(y_train[perm[i:i + batchsize]]))
 
         # Pass the loss function (Classifier defines it) and its arguments
         optimizer.update(model, x, t)
-
         if epoch == 1 and i == 0:
             with open('graph.dot', 'w') as o:
                 variable_style = {'shape': 'octagon', 'fillcolor': '#E0E0E0',
@@ -139,7 +145,6 @@ for epoch in six.moves.range(1, n_epoch + 1):
 
         sum_loss += float(model.loss.data) * len(t.data)
         sum_accuracy += float(model.accuracy.data) * len(t.data)
-        #print(dir(model.children))
     end = time.time()
     elapsed_time = end - start
     throughput = N / elapsed_time
