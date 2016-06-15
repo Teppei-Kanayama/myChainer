@@ -17,3 +17,6 @@ htmlcov/
 /chainer/optimizer.py
 /chainer/function.py
 /chainer/optimizers/adam.py
+*.model
+*.state
+*.dot

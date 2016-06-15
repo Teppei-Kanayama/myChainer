@@ -8,6 +8,8 @@ from chainer import cuda
 import chainer.link as link_module
 
 
+DELAY_NUM = 7
+
 def _sum_sqnorm(arr):
     sq_sum = collections.defaultdict(float)
     for x in arr:
@@ -359,18 +361,18 @@ class GradientMethod(Optimizer):
 
     #-----------start
     def __init__(self):
-        print("This is importted from myoptimizer.py")
-        print("calculate previous parameters and update current parameters")
-        self.prevWconv1 = None
-        self.nowWconv1 = None
-        self.prevWconv2 = None
-        self.nowWconv2 = None
-        self.prevWconv3 = None
-        self.nowWconv3 = None
-        self.prevWfc4 = None
-        self.nowWfc4 = None
-        self.prevWfc5 = None
-        self.nowWfc5 = None
+        print("This is imported from myoptimizer.py")
+        print("DELAY_NUM = %d" % DELAY_NUM)
+        self.prevconv1 = []
+        self.prevconv2 = []
+        self.prevconv3 = []
+        self.prevfc4 = []
+        self.prevfc5 =[]
+        self.nowconv1 = None
+        self.nowconv2 = None
+        self.nowconv3 = None
+        self.nowfc4 = None
+        self.nowfc5 = None
     #-----------end
     def update(self, lossfun=None, *args, **kwds):
         """Updates parameters based on a loss function or computed gradients.
@@ -393,22 +395,25 @@ class GradientMethod(Optimizer):
             #when run normaly, commentout these lines.
             #-----------start
             if True:
-                self.nowWconv1 = cupy.array(self.target.predictor.conv1.W.data)
-                if self.prevWconv1 is not None:
-                    self.target.predictor.conv1.W.data = cupy.array(self.prevWconv1)
-                self.nowWconv2 = cupy.array(self.target.predictor.conv2.W.data)
-                if self.prevWconv2 is not None:
-                    self.target.predictor.conv2.W.data = cupy.array(self.prevWconv2)
-                self.nowWconv3 = cupy.array(self.target.predictor.conv3.W.data)
-                if self.prevWconv3 is not None:
-                    self.target.predictor.conv3.W.data = cupy.array(self.prevWconv3)
-                self.nowWfc4 = cupy.array(self.target.predictor.fc4.W.data)
-                if self.prevWfc4 is not None:
-                    self.target.predictor.fc4.W.data = cupy.array(self.prevWfc4)
-                self.nowWfc5 = cupy.array(self.target.predictor.fc5.W.data)
-                if self.prevWfc5 is not None:
-                    self.target.predictor.fc5.W.data = cupy.array(self.prevWfc5)
-            
+                self.prevconv1.append(cupy.array(self.target.predictor.conv1.W.data))
+                self.prevconv2.append(cupy.array(self.target.predictor.conv2.W.data))
+                self.prevconv3.append(cupy.array(self.target.predictor.conv3.W.data))
+                self.prevfc4.append(cupy.array(self.target.predictor.fc4.W.data))
+                self.prevfc5.append(cupy.array(self.target.predictor.fc5.W.data))
+                
+                if len(self.prevconv1) == DELAY_NUM + 1:
+                    self.target.predictor.conv1.W.data = cupy.array(self.prevconv1.pop(0))
+                    self.target.predictor.conv2.W.data = cupy.array(self.prevconv2.pop(0))
+                    self.target.predictor.conv3.W.data = cupy.array(self.prevconv3.pop(0))
+                    self.target.predictor.fc4.W.data = cupy.array(self.prevfc4.pop(0))
+                    self.target.predictor.fc5.W.data = cupy.array(self.prevfc5.pop(0))
+                else:
+                    self.target.predictor.conv1.W.data = cupy.array(self.prevconv1[0])
+                    self.target.predictor.conv2.W.data = cupy.array(self.prevconv2[0])
+                    self.target.predictor.conv3.W.data = cupy.array(self.prevconv3[0])
+                    self.target.predictor.fc4.W.data = cupy.array(self.prevfc4[0])
+                    self.target.predictor.fc5.W.data = cupy.array(self.prevfc5[0])
+
             #-----------end
             self.target.zerograds()
             loss = lossfun(*args, **kwds)
@@ -419,16 +424,11 @@ class GradientMethod(Optimizer):
         
         #------------start
         if True:
-            self.prevWconv1 = cupy.array(self.nowWconv1)
-            self.target.predictor.conv1.W.data = cupy.array(self.nowWconv1)
-            self.prevWconv2 = cupy.array(self.nowWconv2)
-            self.target.predictor.conv2.W.data = cupy.array(self.nowWconv2)
-            self.prevWconv3 = cupy.array(self.nowWconv3)
-            self.target.predictor.conv3.W.data = cupy.array(self.nowWconv3)
-            self.prevWfc4 = cupy.array(self.nowWfc4)
-            self.target.predictor.fc4.W.data = cupy.array(self.nowWfc4)
-            self.prevWfc5 = cupy.array(self.nowWfc5)
-            self.target.predictor.fc5.W.data = cupy.array(self.nowWfc5)
+            self.target.predictor.conv1.W.data = cupy.array(self.prevconv1[-1])
+            self.target.predictor.conv2.W.data = cupy.array(self.prevconv2[-1])
+            self.target.predictor.conv3.W.data = cupy.array(self.prevconv3[-1])
+            self.target.predictor.fc4.W.data = cupy.array(self.prevfc4[-1])
+            self.target.predictor.fc5.W.data = cupy.array(self.prevfc5[-1])
         #------------end
         self.t += 1
         states = self._states

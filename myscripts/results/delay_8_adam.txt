@@ -1,0 +1,313 @@
+GPU: 0
+# unit: 1000
+# Minibatch-size: 100
+# epoch: 100
+Network type: simple
+
+load cifar-10 dataset
+This is imported from myadam.py
+This is imported from myoptimizer.py
+DELAY_NUM = 8
+epoch 1
+graph generated
+train mean loss=2.42214905453, accuracy=0.105539999936, throughput=5351.57654005 images/sec
+test  mean loss=2.30264739752, accuracy=0.102399999797
+epoch 2
+train mean loss=2.30275471878, accuracy=0.096559999913, throughput=5895.01831722 images/sec
+test  mean loss=2.30266468763, accuracy=0.0942000002228
+epoch 3
+train mean loss=2.30268106747, accuracy=0.0978999997377, throughput=5929.18443208 images/sec
+test  mean loss=2.30263136387, accuracy=0.100500000343
+epoch 4
+train mean loss=2.30275275755, accuracy=0.0986199997924, throughput=5915.90800716 images/sec
+test  mean loss=2.30263566017, accuracy=0.0948000003397
+epoch 5
+train mean loss=2.30272064114, accuracy=0.0959399997704, throughput=5904.9459334 images/sec
+test  mean loss=2.30260103464, accuracy=0.0999999998324
+epoch 6
+train mean loss=2.30271358633, accuracy=0.0990199999288, throughput=5910.19893663 images/sec
+test  mean loss=2.30261384964, accuracy=0.101699999981
+epoch 7
+train mean loss=2.30272265959, accuracy=0.0976999999098, throughput=5906.26221757 images/sec
+test  mean loss=2.30258647203, accuracy=0.102499999758
+epoch 8
+train mean loss=2.30268450832, accuracy=0.101880000003, throughput=5909.7420941 images/sec
+test  mean loss=2.30257241964, accuracy=0.101799999755
+epoch 9
+train mean loss=2.30271268415, accuracy=0.0988600000627, throughput=5900.53969847 images/sec
+test  mean loss=2.3026628089, accuracy=0.0999999998137
+epoch 10
+train mean loss=2.30269506454, accuracy=0.0977399998233, throughput=5908.46570774 images/sec
+test  mean loss=2.30264214277, accuracy=0.0979999997094
+epoch 11
+train mean loss=2.30272343636, accuracy=0.0957000000663, throughput=5907.38921673 images/sec
+test  mean loss=2.30259955406, accuracy=0.100000000168
+epoch 12
+train mean loss=2.30270639706, accuracy=0.0983199998699, throughput=5902.51314284 images/sec
+test  mean loss=2.30260104895, accuracy=0.100000000242
+epoch 13
+train mean loss=2.30269267178, accuracy=0.0987999998629, throughput=5888.28969206 images/sec
+test  mean loss=2.30259980679, accuracy=0.0999999998137
+epoch 14
+train mean loss=2.30271663284, accuracy=0.0954999999367, throughput=5878.44761591 images/sec
+test  mean loss=2.30259073734, accuracy=0.100000000242
+epoch 15
+train mean loss=2.30270228243, accuracy=0.0981199999265, throughput=6066.66676502 images/sec
+test  mean loss=2.30259919405, accuracy=0.100000000075
+epoch 16
+train mean loss=2.30269880486, accuracy=0.0985199998617, throughput=6093.7643516 images/sec
+test  mean loss=2.30259569168, accuracy=0.100000000075
+epoch 17
+train mean loss=2.302707479, accuracy=0.097039999906, throughput=6122.33560129 images/sec
+test  mean loss=2.30259444714, accuracy=0.100000000224
+epoch 18
+train mean loss=2.30270609713, accuracy=0.0960200000294, throughput=6080.69891481 images/sec
+test  mean loss=2.30259309292, accuracy=0.100000000224
+epoch 19
+train mean loss=2.30269220209, accuracy=0.0974799997509, throughput=6059.70769072 images/sec
+test  mean loss=2.30259839058, accuracy=0.100000000242
+epoch 20
+train mean loss=2.30272082567, accuracy=0.0975000001043, throughput=6094.18846026 images/sec
+test  mean loss=2.30259372234, accuracy=0.100000000075
+epoch 21
+train mean loss=2.30269853067, accuracy=0.0987199995853, throughput=6093.83553398 images/sec
+test  mean loss=2.30260642529, accuracy=0.10000000013
+epoch 22
+train mean loss=2.30270393801, accuracy=0.0991799999438, throughput=6081.9947172 images/sec
+test  mean loss=2.30259580135, accuracy=0.100000000224
+epoch 23
+train mean loss=2.30272538519, accuracy=0.0991599997394, throughput=6080.69080455 images/sec
+test  mean loss=2.30259831905, accuracy=0.100000000224
+epoch 24
+train mean loss=2.30271460199, accuracy=0.0971200000755, throughput=6066.12505332 images/sec
+test  mean loss=2.30259285688, accuracy=0.100000000075
+epoch 25
+train mean loss=2.30269643641, accuracy=0.0977599999867, throughput=6081.72327247 images/sec
+test  mean loss=2.30259649754, accuracy=0.100000000075
+epoch 26
+train mean loss=2.30269267511, accuracy=0.100060000069, throughput=6075.82274207 images/sec
+test  mean loss=2.30259346008, accuracy=0.100000000149
+epoch 27
+train mean loss=2.30271190357, accuracy=0.0980000000633, throughput=6065.67992891 images/sec
+test  mean loss=2.30259710789, accuracy=0.100000000224
+epoch 28
+train mean loss=2.30271913147, accuracy=0.0973800000958, throughput=6059.28784229 images/sec
+test  mean loss=2.30258962631, accuracy=0.100000000075
+epoch 29
+train mean loss=2.30271956015, accuracy=0.0968199998662, throughput=6098.52927047 images/sec
+test  mean loss=2.30259961843, accuracy=0.0999999998324
+epoch 30
+train mean loss=2.30269805336, accuracy=0.0978799999915, throughput=5997.43447377 images/sec
+test  mean loss=2.30259786367, accuracy=0.100000000168
+epoch 31
+train mean loss=2.30269372654, accuracy=0.0970800000839, throughput=5878.35699021 images/sec
+test  mean loss=2.30260388374, accuracy=0.0999999998137
+epoch 32
+train mean loss=2.30268984175, accuracy=0.0998199998774, throughput=5887.20335186 images/sec
+test  mean loss=2.30260223389, accuracy=0.0999999998137
+epoch 33
+train mean loss=2.302723001, accuracy=0.097419999823, throughput=5881.696992 images/sec
+test  mean loss=2.30259183884, accuracy=0.0999999998324
+epoch 34
+train mean loss=2.30270966816, accuracy=0.0992399999388, throughput=5879.47814428 images/sec
+test  mean loss=2.30259217262, accuracy=0.100000000186
+epoch 35
+train mean loss=2.30269493628, accuracy=0.0993199999519, throughput=5880.02923708 images/sec
+test  mean loss=2.30260430098, accuracy=0.100000000149
+epoch 36
+train mean loss=2.3026931448, accuracy=0.0999000000358, throughput=5872.3927185 images/sec
+test  mean loss=2.30259989738, accuracy=0.10000000013
+epoch 37
+train mean loss=2.30268990564, accuracy=0.0993000000827, throughput=5889.77885413 images/sec
+test  mean loss=2.30260633469, accuracy=0.10000000013
+epoch 38
+train mean loss=2.30269876909, accuracy=0.0993000000939, throughput=5871.45623315 images/sec
+test  mean loss=2.30259549141, accuracy=0.100000000224
+epoch 39
+train mean loss=2.30268892145, accuracy=0.0987799998336, throughput=5859.32509099 images/sec
+test  mean loss=2.30259201765, accuracy=0.100000000168
+epoch 40
+train mean loss=2.30267914295, accuracy=0.0998399999738, throughput=5872.28583622 images/sec
+test  mean loss=2.30260448456, accuracy=0.100000000224
+epoch 41
+train mean loss=2.30271062279, accuracy=0.0984599998742, throughput=5859.13699854 images/sec
+test  mean loss=2.30259301662, accuracy=0.0999999998137
+epoch 42
+train mean loss=2.30269535637, accuracy=0.0976599998251, throughput=5838.61213358 images/sec
+test  mean loss=2.30259910822, accuracy=0.100000000168
+epoch 43
+train mean loss=2.31029282331, accuracy=0.098719999861, throughput=5834.07496568 images/sec
+test  mean loss=2.30263642073, accuracy=0.105700000636
+epoch 44
+train mean loss=2.30278493404, accuracy=0.0997799998783, throughput=5856.04559934 images/sec
+test  mean loss=2.30275935173, accuracy=0.0957999999076
+epoch 45
+train mean loss=2.30280129623, accuracy=0.0977199997567, throughput=5880.51958715 images/sec
+test  mean loss=2.30262795687, accuracy=0.0993999999762
+epoch 46
+train mean loss=2.30270506382, accuracy=0.0992999998368, throughput=5877.12920497 images/sec
+test  mean loss=2.30256084681, accuracy=0.100999999661
+epoch 47
+train mean loss=2.30272895193, accuracy=0.0968800000548, throughput=5868.82840314 images/sec
+test  mean loss=2.30263005257, accuracy=0.100000000149
+epoch 48
+train mean loss=2.30271173811, accuracy=0.0986200000346, throughput=5884.63076155 images/sec
+test  mean loss=2.30260215998, accuracy=0.0999999998137
+epoch 49
+train mean loss=2.30272054529, accuracy=0.0979399998188, throughput=6118.92192118 images/sec
+test  mean loss=2.30259975433, accuracy=0.100000000075
+epoch 50
+train mean loss=2.30269964743, accuracy=0.0987600000165, throughput=5020.64684131 images/sec
+test  mean loss=2.30259206533, accuracy=0.100000000168
+epoch 51
+train mean loss=2.30271403313, accuracy=0.0971400000863, throughput=5885.93156064 images/sec
+test  mean loss=2.30259531021, accuracy=0.100000000075
+epoch 52
+train mean loss=2.30270520496, accuracy=0.09757999992, throughput=5905.20814561 images/sec
+test  mean loss=2.30260043621, accuracy=0.100000000168
+epoch 53
+train mean loss=2.30267976999, accuracy=0.0967200000584, throughput=5883.08660291 images/sec
+test  mean loss=2.30261876345, accuracy=0.100000000149
+epoch 54
+train mean loss=2.30272238779, accuracy=0.0985199997239, throughput=5876.88479641 images/sec
+test  mean loss=2.30259512424, accuracy=0.10000000013
+epoch 55
+train mean loss=2.30270018625, accuracy=0.0996199998818, throughput=5919.96571919 images/sec
+test  mean loss=2.30258982658, accuracy=0.100000000224
+epoch 56
+train mean loss=2.30268661594, accuracy=0.098279999882, throughput=5937.62872601 images/sec
+test  mean loss=2.30260652065, accuracy=0.10000000013
+epoch 57
+train mean loss=2.30271549368, accuracy=0.0977999999113, throughput=5935.09771726 images/sec
+test  mean loss=2.30260327816, accuracy=0.100000000168
+epoch 58
+train mean loss=2.30272649622, accuracy=0.0965800000168, throughput=5933.64615935 images/sec
+test  mean loss=2.30261045456, accuracy=0.10000000013
+epoch 59
+train mean loss=2.30270677376, accuracy=0.0992999999784, throughput=5936.41117954 images/sec
+test  mean loss=2.30260650873, accuracy=0.100000000224
+epoch 60
+train mean loss=2.30271445799, accuracy=0.0991000000238, throughput=5938.28964396 images/sec
+test  mean loss=2.30259964943, accuracy=0.100000000186
+epoch 61
+train mean loss=2.30270420122, accuracy=0.100159999911, throughput=5932.10083942 images/sec
+test  mean loss=2.30259939432, accuracy=0.100000000168
+epoch 62
+train mean loss=2.30270805597, accuracy=0.0978999999836, throughput=5931.97650361 images/sec
+test  mean loss=2.30259179592, accuracy=0.100000000149
+epoch 63
+train mean loss=2.30269609785, accuracy=0.0982599997483, throughput=5715.05249346 images/sec
+test  mean loss=2.30259922504, accuracy=0.100000000168
+epoch 64
+train mean loss=2.30268261766, accuracy=0.0990599998385, throughput=5910.04470482 images/sec
+test  mean loss=2.30260601759, accuracy=0.0999999998324
+epoch 65
+train mean loss=2.30271018648, accuracy=0.0982799999788, throughput=5883.81004779 images/sec
+test  mean loss=2.3025942874, accuracy=0.100000000242
+epoch 66
+train mean loss=2.30271443176, accuracy=0.0958999999762, throughput=5863.06210375 images/sec
+test  mean loss=2.30258775711, accuracy=0.100000000186
+epoch 67
+train mean loss=2.30271349382, accuracy=0.0974399998784, throughput=4643.78721694 images/sec
+test  mean loss=2.30259428263, accuracy=0.100000000075
+epoch 68
+train mean loss=2.30271301699, accuracy=0.0970599997975, throughput=4562.45129768 images/sec
+test  mean loss=2.30259876728, accuracy=0.100000000224
+epoch 69
+train mean loss=2.30271177578, accuracy=0.098759999983, throughput=5730.86329622 images/sec
+test  mean loss=2.3025966692, accuracy=0.100000000149
+epoch 70
+train mean loss=2.30270186281, accuracy=0.0974999997877, throughput=5888.12750901 images/sec
+test  mean loss=2.3025910306, accuracy=0.0999999998137
+epoch 71
+train mean loss=2.30270313501, accuracy=0.0993999998271, throughput=5876.41909298 images/sec
+test  mean loss=2.30260108709, accuracy=0.100000000168
+epoch 72
+train mean loss=2.30271134281, accuracy=0.0979799998887, throughput=5887.94301805 images/sec
+test  mean loss=2.30259042501, accuracy=0.0999999998137
+epoch 73
+train mean loss=2.30268906736, accuracy=0.100479999807, throughput=5880.87989982 images/sec
+test  mean loss=2.30260704994, accuracy=0.0999999998324
+epoch 74
+train mean loss=2.30272781563, accuracy=0.0975999999456, throughput=5871.15082201 images/sec
+test  mean loss=2.30258832693, accuracy=0.0999999998324
+epoch 75
+train mean loss=2.30268218422, accuracy=0.0972799999118, throughput=5878.58372449 images/sec
+test  mean loss=2.30259895325, accuracy=0.100000000149
+epoch 76
+train mean loss=2.30270318174, accuracy=0.0979799999446, throughput=5880.60879546 images/sec
+test  mean loss=2.30260183573, accuracy=0.100000000186
+epoch 77
+train mean loss=2.30271290636, accuracy=0.0977000000142, throughput=5871.41760296 images/sec
+test  mean loss=2.30259985924, accuracy=0.100000000168
+epoch 78
+train mean loss=2.30269273615, accuracy=0.0983399999514, throughput=5888.72040501 images/sec
+test  mean loss=2.30260662794, accuracy=0.0999999998324
+epoch 79
+train mean loss=2.30271609497, accuracy=0.0986199998744, throughput=5876.10773204 images/sec
+test  mean loss=2.30260247469, accuracy=0.100000000149
+epoch 80
+train mean loss=2.30269162369, accuracy=0.0950399998426, throughput=5885.32056269 images/sec
+test  mean loss=2.30259601831, accuracy=0.100000000168
+epoch 81
+train mean loss=2.30270221376, accuracy=0.0962599997334, throughput=5881.25427601 images/sec
+test  mean loss=2.3026020956, accuracy=0.100000000242
+epoch 82
+train mean loss=2.30271281624, accuracy=0.0966999997646, throughput=5877.17762794 images/sec
+test  mean loss=2.30258800983, accuracy=0.100000000224
+epoch 83
+train mean loss=2.30270221758, accuracy=0.0982999999411, throughput=5880.89094901 images/sec
+test  mean loss=2.30259471655, accuracy=0.100000000242
+epoch 84
+train mean loss=2.30271436024, accuracy=0.0982800000459, throughput=5866.8967823 images/sec
+test  mean loss=2.30259379625, accuracy=0.10000000013
+epoch 85
+train mean loss=2.30268826723, accuracy=0.0976400000267, throughput=5867.14807552 images/sec
+test  mean loss=2.3026019311, accuracy=0.0999999998324
+epoch 86
+train mean loss=2.30271609926, accuracy=0.0966799998321, throughput=5883.52827432 images/sec
+test  mean loss=2.30259374857, accuracy=0.100000000224
+epoch 87
+train mean loss=2.3026949029, accuracy=0.0970400000513, throughput=5871.02541211 images/sec
+test  mean loss=2.30259832621, accuracy=0.100000000075
+epoch 88
+train mean loss=2.30270333481, accuracy=0.0975999998897, throughput=5868.83185213 images/sec
+test  mean loss=2.30260167122, accuracy=0.100000000186
+epoch 89
+train mean loss=2.30269987297, accuracy=0.0993400000073, throughput=5869.90665762 images/sec
+test  mean loss=2.30261164904, accuracy=0.0999999998137
+epoch 90
+train mean loss=2.30270444441, accuracy=0.0983199999556, throughput=5850.18165353 images/sec
+test  mean loss=2.30259453535, accuracy=0.100000000075
+epoch 91
+train mean loss=2.30270928717, accuracy=0.0976799999774, throughput=5844.90361067 images/sec
+test  mean loss=2.30259060621, accuracy=0.0999999998137
+epoch 92
+train mean loss=2.30270464087, accuracy=0.0970200001895, throughput=5835.39929617 images/sec
+test  mean loss=2.30259754896, accuracy=0.0999999998137
+epoch 93
+train mean loss=2.30270588207, accuracy=0.0973799998462, throughput=5839.51215401 images/sec
+test  mean loss=2.30259585381, accuracy=0.0999999998324
+epoch 94
+train mean loss=2.3026941309, accuracy=0.0974999999925, throughput=5837.73351573 images/sec
+test  mean loss=2.30260237694, accuracy=0.0999999998137
+epoch 95
+train mean loss=2.3027016778, accuracy=0.0967799999975, throughput=5842.22999334 images/sec
+test  mean loss=2.3025963378, accuracy=0.0999999998324
+epoch 96
+train mean loss=2.30270671177, accuracy=0.0987999998145, throughput=5837.60400453 images/sec
+test  mean loss=2.30259824753, accuracy=0.0999999998137
+epoch 97
+train mean loss=2.30269240189, accuracy=0.0972600000501, throughput=5844.14996312 images/sec
+test  mean loss=2.30260729074, accuracy=0.10000000013
+epoch 98
+train mean loss=2.30271958733, accuracy=0.0964200000167, throughput=5845.76467137 images/sec
+test  mean loss=2.30259068012, accuracy=0.100000000242
+epoch 99
+train mean loss=2.30271060705, accuracy=0.0967800000347, throughput=5839.05804472 images/sec
+test  mean loss=2.30259408236, accuracy=0.0999999998324
+epoch 100
+train mean loss=2.30269187832, accuracy=0.0988399999291, throughput=5841.53984197 images/sec
+test  mean loss=2.30260157824, accuracy=0.0999999998137
+save the model
+save the optimizer
