@@ -8,9 +8,11 @@ from chainer import cuda
 import chainer.link as link_module
 
 
-DELAY_NUM = 5
+DELAY_NUM = 2000
 PRE_BATCH_NUM = 0
 N = 50000
+batchsize = 100
+FC_SERVER = True
 
 def _sum_sqnorm(arr):
     sq_sum = collections.defaultdict(float)
@@ -364,6 +366,8 @@ class GradientMethod(Optimizer):
     def __init__(self):
         print("This is imported from myoptimizer.py")
         print("DELAY_NUM = %d" % DELAY_NUM)
+        print("PRE_BATCH_NUM = %d" % PRE_BATCH_NUM)
+        print("FC_SERVER = %d" % FC_SERVER)
         self.prevconv1 = []
         self.prevconv2 = []
         self.prevconv3 = []
@@ -388,27 +392,34 @@ class GradientMethod(Optimizer):
 
         """
         if lossfun is not None:
-            if self.count < PRE_BATCH_NUM:
+            if self.count < PRE_BATCH_NUM or DELAY_NUM == 0:
                 pass
             else:
                 self.prevconv1.append(cupy.array(self.target.predictor.conv1.W.data))
                 self.prevconv2.append(cupy.array(self.target.predictor.conv2.W.data))
                 self.prevconv3.append(cupy.array(self.target.predictor.conv3.W.data))
-                self.prevfc4.append(cupy.array(self.target.predictor.fc4.W.data))
-                self.prevfc5.append(cupy.array(self.target.predictor.fc5.W.data))
+
+                if not FC_SERVER:
+                    self.prevfc4.append(cupy.array(self.target.predictor.fc4.W.data))
+                    self.prevfc5.append(cupy.array(self.target.predictor.fc5.W.data))
                 
                 if len(self.prevconv1) == DELAY_NUM + 1:
                     self.target.predictor.conv1.W.data = cupy.array(self.prevconv1.pop(0))
                     self.target.predictor.conv2.W.data = cupy.array(self.prevconv2.pop(0))
                     self.target.predictor.conv3.W.data = cupy.array(self.prevconv3.pop(0))
-                    self.target.predictor.fc4.W.data = cupy.array(self.prevfc4.pop(0))
-                    self.target.predictor.fc5.W.data = cupy.array(self.prevfc5.pop(0))
+
+                    if not FC_SERVER:
+                        self.target.predictor.fc4.W.data = cupy.array(self.prevfc4.pop(0))
+                        self.target.predictor.fc5.W.data = cupy.array(self.prevfc5.pop(0))
+
                 else:
                     self.target.predictor.conv1.W.data = cupy.array(self.prevconv1[0])
                     self.target.predictor.conv2.W.data = cupy.array(self.prevconv2[0])
                     self.target.predictor.conv3.W.data = cupy.array(self.prevconv3[0])
-                    self.target.predictor.fc4.W.data = cupy.array(self.prevfc4[0])
-                    self.target.predictor.fc5.W.data = cupy.array(self.prevfc5[0])
+
+                    if not FC_SERVER:
+                        self.target.predictor.fc4.W.data = cupy.array(self.prevfc4[0])
+                        self.target.predictor.fc5.W.data = cupy.array(self.prevfc5[0])
 
             self.target.zerograds()
             loss = lossfun(*args, **kwds)
@@ -418,14 +429,15 @@ class GradientMethod(Optimizer):
         self.prepare()
         
 
-        if self.count < PRE_BATCH_NUM:
+        if self.count < PRE_BATCH_NUM or DELAY_NUM == 0:
             pass
         else:
             self.target.predictor.conv1.W.data = cupy.array(self.prevconv1[-1])
             self.target.predictor.conv2.W.data = cupy.array(self.prevconv2[-1])
             self.target.predictor.conv3.W.data = cupy.array(self.prevconv3[-1])
-            self.target.predictor.fc4.W.data = cupy.array(self.prevfc4[-1])
-            self.target.predictor.fc5.W.data = cupy.array(self.prevfc5[-1])
+            if not FC_SERVER:
+                self.target.predictor.fc4.W.data = cupy.array(self.prevfc4[-1])
+                self.target.predictor.fc5.W.data = cupy.array(self.prevfc5[-1])
 
         self.t += 1
         states = self._states

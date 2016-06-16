@@ -25,7 +25,7 @@ import sys
 sys.path.append("/home/mil/kanayama/chainer/chainer/optimizers/")
 import myadam
 import mysgd
-
+import mymomentum_sgd
 
 parser = argparse.ArgumentParser(description='Chainer example: MNIST')
 parser.add_argument('--initmodel', '-m', default='',
@@ -101,8 +101,9 @@ elif args.net == 'parallel':
     xp = cuda.cupy
 
 # Setup optimizer
-optimizer = myadam.Adam()
+#optimizer = myadam.Adam()
 #optimizer = mysgd.SGD()
+optimizer = mymomentum_sgd.MomentumSGD()
 optimizer.setup(model)
 
 # Init/Resume
