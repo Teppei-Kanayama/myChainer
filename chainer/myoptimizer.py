@@ -11,7 +11,7 @@ import chainer.link as link_module
 
 import random
 
-DELAY_NUM = 200
+DELAY_NUM = 500
 PRE_BATCH_NUM = 0
 N = 50000
 batchsize = 100

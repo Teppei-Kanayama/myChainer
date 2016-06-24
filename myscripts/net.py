@@ -2,20 +2,22 @@ import chainer
 import chainer.functions as F
 import chainer.links as L
 
+class Alex(chainer.Chain):
 
-class Net1(chainer.Chain):
-    insize = 32
-    
+    """Single-GPU AlexNet without partition toward the channel axis."""
+
+    insize = 227
+
     def __init__(self):
-        super(Net1, self).__init__(
-            conv1=L.Convolution2D(3,  96, 11, stride=1),
+        super(Alex, self).__init__(
+            conv1=L.Convolution2D(3,  96, 11, stride=4),
             conv2=L.Convolution2D(96, 256,  5, pad=2),
             conv3=L.Convolution2D(256, 384,  3, pad=1),
             conv4=L.Convolution2D(384, 384,  3, pad=1),
             conv5=L.Convolution2D(384, 256,  3, pad=1),
-            fc6=L.Linear(1024, 4096),
+            fc6=L.Linear(9216, 4096),
             fc7=L.Linear(4096, 4096),
-            fc8=L.Linear(4096, 10),
+            fc8=L.Linear(4096, 1000),
         )
         self.train = True
 
@@ -35,7 +37,9 @@ class Net1(chainer.Chain):
         h = F.dropout(F.relu(self.fc6(h)), train=self.train)
         h = F.dropout(F.relu(self.fc7(h)), train=self.train)
         h = self.fc8(h)
+
         return h
+
 
 class Net2(chainer.Chain):
     inseize = 32
