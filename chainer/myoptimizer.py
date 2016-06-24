@@ -1,4 +1,4 @@
-#! coding: utf-8
+# -*-coding:utf-8-*-
 
 import collections
 
@@ -11,11 +11,11 @@ import chainer.link as link_module
 
 import random
 
-DELAY_NUM = 1
+DELAY_NUM = 200
 PRE_BATCH_NUM = 0
 N = 50000
 batchsize = 100
-FC_SERVER = False
+FC_SERVER = True
 
 def _sum_sqnorm(arr):
     sq_sum = collections.defaultdict(float)
@@ -371,11 +371,14 @@ class GradientMethod(Optimizer):
         print("DELAY_NUM = %d" % DELAY_NUM)
         print("PRE_BATCH_NUM = %d" % PRE_BATCH_NUM)
         print("FC_SERVER = %d" % FC_SERVER)
+
+        #過去の重みを保持しておくためのリスト
         self.prevconv1 = []
         self.prevconv2 = []
         self.prevconv3 = []
         self.prevfc4 = []
         self.prevfc5 =[]
+
         self.count = 0
 
     def update(self, lossfun=None, *args, **kwds):
@@ -394,20 +397,25 @@ class GradientMethod(Optimizer):
         :meth:`update_one_gpu`).
 
         """
+
         if lossfun is not None:
             if self.count < PRE_BATCH_NUM or DELAY_NUM == 0:
                 pass
             else:
-                if len(self.prevconv1) < DELAY_NUM:
+                
+                if len(self.prevconv1) <= DELAY_NUM:
+                    #現在の重みをリストの最後に追加する。
                     self.prevconv1.append(cupy.array(self.target.predictor.conv1.W.data))
                     self.prevconv2.append(cupy.array(self.target.predictor.conv2.W.data))
                     self.prevconv3.append(cupy.array(self.target.predictor.conv3.W.data))
 
-                if not FC_SERVER:
-                    self.prevfc4.append(cupy.array(self.target.predictor.fc4.W.data))
-                    self.prevfc5.append(cupy.array(self.target.predictor.fc5.W.data))
-                
+
+                    if not FC_SERVER:
+                        self.prevfc4.append(cupy.array(self.target.predictor.fc4.W.data))
+                        self.prevfc5.append(cupy.array(self.target.predictor.fc5.W.data))
+
                 if len(self.prevconv1) == DELAY_NUM + 1:
+                    #リストの先頭に保存されている重みを取り出し、現在の重みを書き換える。
                     self.target.predictor.conv1.W.data = cupy.array(self.prevconv1.pop(0))
                     self.target.predictor.conv2.W.data = cupy.array(self.prevconv2.pop(0))
                     self.target.predictor.conv3.W.data = cupy.array(self.prevconv3.pop(0))
@@ -417,10 +425,10 @@ class GradientMethod(Optimizer):
                         self.target.predictor.fc5.W.data = cupy.array(self.prevfc5.pop(0))
 
                 else:
+                    #リストの先頭に保存されている重みを参照し、現在の重みを書き換える。
                     self.target.predictor.conv1.W.data = cupy.array(self.prevconv1[0])
                     self.target.predictor.conv2.W.data = cupy.array(self.prevconv2[0])
                     self.target.predictor.conv3.W.data = cupy.array(self.prevconv3[0])
-
 
                     if not FC_SERVER:
                         self.target.predictor.fc4.W.data = cupy.array(self.prevfc4[0])
@@ -437,13 +445,14 @@ class GradientMethod(Optimizer):
         if self.count < PRE_BATCH_NUM or DELAY_NUM == 0:
             pass
         else:
+            #リストの最後に保存されている重みを参照し、現在の重みを書き換える。
             self.target.predictor.conv1.W.data = cupy.array(self.prevconv1[-1])
             self.target.predictor.conv2.W.data = cupy.array(self.prevconv2[-1])
             self.target.predictor.conv3.W.data = cupy.array(self.prevconv3[-1])
+            
             if not FC_SERVER:
                 self.target.predictor.fc4.W.data = cupy.array(self.prevfc4[-1])
                 self.target.predictor.fc5.W.data = cupy.array(self.prevfc5[-1])
-
         self.t += 1
         states = self._states
         for name, param in self.target.namedparams():
