@@ -1,3 +1,5 @@
+#! coding: utf-8
+
 import collections
 
 import numpy
@@ -7,8 +9,9 @@ import cupy
 from chainer import cuda
 import chainer.link as link_module
 
+import random
 
-DELAY_NUM = 2000
+DELAY_NUM = 1
 PRE_BATCH_NUM = 0
 N = 50000
 batchsize = 100
@@ -395,9 +398,10 @@ class GradientMethod(Optimizer):
             if self.count < PRE_BATCH_NUM or DELAY_NUM == 0:
                 pass
             else:
-                self.prevconv1.append(cupy.array(self.target.predictor.conv1.W.data))
-                self.prevconv2.append(cupy.array(self.target.predictor.conv2.W.data))
-                self.prevconv3.append(cupy.array(self.target.predictor.conv3.W.data))
+                if len(self.prevconv1) < DELAY_NUM:
+                    self.prevconv1.append(cupy.array(self.target.predictor.conv1.W.data))
+                    self.prevconv2.append(cupy.array(self.target.predictor.conv2.W.data))
+                    self.prevconv3.append(cupy.array(self.target.predictor.conv3.W.data))
 
                 if not FC_SERVER:
                     self.prevfc4.append(cupy.array(self.target.predictor.fc4.W.data))
@@ -416,6 +420,8 @@ class GradientMethod(Optimizer):
                     self.target.predictor.conv1.W.data = cupy.array(self.prevconv1[0])
                     self.target.predictor.conv2.W.data = cupy.array(self.prevconv2[0])
                     self.target.predictor.conv3.W.data = cupy.array(self.prevconv3[0])
+                    #print(self.prevconv1[0][0][0])
+
 
                     if not FC_SERVER:
                         self.target.predictor.fc4.W.data = cupy.array(self.prevfc4[0])
