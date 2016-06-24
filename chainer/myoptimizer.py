@@ -15,7 +15,7 @@ DELAY_NUM = 1
 PRE_BATCH_NUM = 0
 N = 50000
 batchsize = 100
-FC_SERVER = True
+FC_SERVER = False
 
 def _sum_sqnorm(arr):
     sq_sum = collections.defaultdict(float)
@@ -420,7 +420,6 @@ class GradientMethod(Optimizer):
                     self.target.predictor.conv1.W.data = cupy.array(self.prevconv1[0])
                     self.target.predictor.conv2.W.data = cupy.array(self.prevconv2[0])
                     self.target.predictor.conv3.W.data = cupy.array(self.prevconv3[0])
-                    #print(self.prevconv1[0][0][0])
 
 
                     if not FC_SERVER:

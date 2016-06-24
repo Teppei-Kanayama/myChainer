@@ -101,9 +101,9 @@ elif args.net == 'parallel':
     xp = cuda.cupy
 
 # Setup optimizer
-#optimizer = myadam.Adam()
+optimizer = myadam.Adam()
 #optimizer = mysgd.SGD()
-optimizer = mymomentum_sgd.MomentumSGD()
+#optimizer = mymomentum_sgd.MomentumSGD()
 optimizer.setup(model)
 
 # Init/Resume
