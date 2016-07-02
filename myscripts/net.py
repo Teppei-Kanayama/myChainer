@@ -1,6 +1,7 @@
 import chainer
 import chainer.functions as F
 import chainer.links as L
+import time
 
 class Alex(chainer.Chain):
 
@@ -27,6 +28,8 @@ class Alex(chainer.Chain):
 
     def __call__(self, x):
         self.clear()
+        start0 = time.time()
+        start = time.time()
         h = F.max_pooling_2d(F.relu(
             F.local_response_normalization(self.conv1(x))), 3, stride=2)
         h = F.max_pooling_2d(F.relu(
@@ -34,10 +37,13 @@ class Alex(chainer.Chain):
         h = F.relu(self.conv3(h))
         h = F.relu(self.conv4(h))
         h = F.max_pooling_2d(F.relu(self.conv5(h)), 3, stride=2)
+        print("convolution:", time.time() - start)
+        start = time.time()
         h = F.dropout(F.relu(self.fc6(h)), train=self.train)
         h = F.dropout(F.relu(self.fc7(h)), train=self.train)
         h = self.fc8(h)
-
+        print("fully connected:", time.time() - start)
+        print(time.time() - start0)
         return h
 
 

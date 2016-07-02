@@ -10,8 +10,9 @@ from chainer import cuda
 import chainer.link as link_module
 
 import random
+import time
 
-DELAY_NUM = 500
+DELAY_NUM = 100
 PRE_BATCH_NUM = 0
 N = 50000
 batchsize = 100
@@ -399,6 +400,7 @@ class GradientMethod(Optimizer):
         """
 
         if lossfun is not None:
+            #start = time.time()
             if self.count < PRE_BATCH_NUM or DELAY_NUM == 0:
                 pass
             else:
@@ -435,9 +437,16 @@ class GradientMethod(Optimizer):
                         self.target.predictor.fc5.W.data = cupy.array(self.prevfc5[0])
 
             self.target.zerograds()
+
+            start = time.time()
             loss = lossfun(*args, **kwds)
+            print("forward:", time.time() - start)
+            start = time.time()
             loss.backward()
+            print("backward:", time.time() - start)
             del loss
+            #total_time = time.time() - start
+            #print("total_time:%lf, update_num:%d", total_time, self.count)
         self.call_hooks()
         self.prepare()
         
@@ -459,10 +468,7 @@ class GradientMethod(Optimizer):
             with cuda.get_device(param.data):
                 self.update_one(param, states[name])
         
-        if self.count == N - 1:
-            self.count = 0
-        else:
-            self.count += 1
+        self.count += 1
 
 
     def update_one(self, param, state):
