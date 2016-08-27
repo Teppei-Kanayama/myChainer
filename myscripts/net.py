@@ -21,6 +21,9 @@ class Alex(chainer.Chain):
             fc8=L.Linear(4096, 1000),
         )
         self.train = True
+        self.conv_time = 0
+        self.fc_time = 0
+        self.count = 0
 
     def clear(self):
         self.loss = None
@@ -28,7 +31,6 @@ class Alex(chainer.Chain):
 
     def __call__(self, x):
         self.clear()
-        start0 = time.time()
         start = time.time()
         h = F.max_pooling_2d(F.relu(
             F.local_response_normalization(self.conv1(x))), 3, stride=2)
@@ -37,13 +39,18 @@ class Alex(chainer.Chain):
         h = F.relu(self.conv3(h))
         h = F.relu(self.conv4(h))
         h = F.max_pooling_2d(F.relu(self.conv5(h)), 3, stride=2)
-        print("convolution:", time.time() - start)
+        if self.count > 0:
+            self.conv_time += time.time() - start
         start = time.time()
         h = F.dropout(F.relu(self.fc6(h)), train=self.train)
         h = F.dropout(F.relu(self.fc7(h)), train=self.train)
         h = self.fc8(h)
-        print("fully connected:", time.time() - start)
-        print(time.time() - start0)
+        if self.count > 0:
+            self.fc_time += time.time() - start
+        if self.count % 10 == 1:
+            print "conv:", self.conv_time / self.count
+            print "fc'", self.fc_time / self.count
+        self.count += 1
         return h
 
 

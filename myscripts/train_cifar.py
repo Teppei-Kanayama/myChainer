@@ -144,6 +144,22 @@ for epoch in six.moves.range(1, n_epoch + 1):
                 o.write(g.dump())
             print('graph generated')
 
+        if i % 5000 == 0:
+        # evaluation 
+            sum_accuracy = 0
+            sum_loss = 0
+            for i in six.moves.range(0, N_test, batchsize):
+                x = chainer.Variable(xp.asarray(x_test[i:i + batchsize]),
+                                     volatile='on')
+                t = chainer.Variable(xp.asarray(y_test[i:i + batchsize]),
+                                     volatile='on')
+                loss = model(x, t)
+                sum_loss += float(loss.data) * len(t.data)
+                sum_accuracy += float(model.accuracy.data) * len(t.data)
+
+            print('test  mean loss={}, accuracy={}'.format(
+                sum_loss / N_test, sum_accuracy / N_test))
+
         sum_loss += float(model.loss.data) * len(t.data)
         sum_accuracy += float(model.accuracy.data) * len(t.data)
     end = time.time()

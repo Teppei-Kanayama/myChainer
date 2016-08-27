@@ -12,9 +12,9 @@ import chainer.link as link_module
 import random
 import time
 
-DELAY_NUM = 100
+DELAY_NUM = 200
 PRE_BATCH_NUM = 0
-N = 50000
+#N = 0
 batchsize = 100
 FC_SERVER = True
 
@@ -382,6 +382,9 @@ class GradientMethod(Optimizer):
 
         self.count = 0
 
+        self.forward_time = 0
+        self.backward_time = 0
+
     def update(self, lossfun=None, *args, **kwds):
         """Updates parameters based on a loss function or computed gradients.
 
@@ -400,7 +403,6 @@ class GradientMethod(Optimizer):
         """
 
         if lossfun is not None:
-            #start = time.time()
             if self.count < PRE_BATCH_NUM or DELAY_NUM == 0:
                 pass
             else:
@@ -440,13 +442,15 @@ class GradientMethod(Optimizer):
 
             start = time.time()
             loss = lossfun(*args, **kwds)
-            print("forward:", time.time() - start)
+            if self.count > 1:
+                #print time.time() - start
+                self.forward_time += time.time() - start
             start = time.time()
             loss.backward()
-            print("backward:", time.time() - start)
+            if self.count > 1:
+                #print time.time() - start
+                self.backward_time += time.time() - start
             del loss
-            #total_time = time.time() - start
-            #print("total_time:%lf, update_num:%d", total_time, self.count)
         self.call_hooks()
         self.prepare()
         
@@ -468,8 +472,11 @@ class GradientMethod(Optimizer):
             with cuda.get_device(param.data):
                 self.update_one(param, states[name])
         
-        self.count += 1
+        #if self.count % 10 == 1:
+        #    print("forward average:", self.forward_time / self.count)
+        #    print("backward average:", self.backward_time /self.count)
 
+        self.count += 1
 
     def update_one(self, param, state):
         """Updates a parameter based on the corresponding gradient and state.
